@@ -1,0 +1,77 @@
+/* ════════════════════════════════════════
+   Balance Cards Grid
+   ════════════════════════════════════════ */
+
+.balance-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-lg);
+}
+
+.balance-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  transition: filter var(--transition-normal);
+}
+
+.balance-card--blurred .balance-card__value {
+  filter: blur(8px);
+  user-select: none;
+}
+
+.balance-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.balance-card__name {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+}
+
+.balance-card__number {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  font-family: monospace;
+}
+
+.balance-card__amount {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.balance-card__value {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: -0.02em;
+}
+
+.balance-card__change {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+}
+
+.balance-card__change--positive {
+  color: var(--color-success);
+  background: hsla(145, 65%, 48%, 0.1);
+}
+
+.balance-card__change--negative {
+  color: var(--color-error);
+  background: var(--color-error-bg);
+}
+
+@media (max-width: 968px) {
+  .balance-grid {
+    grid-template-columns: 1fr;
+  }
+}
