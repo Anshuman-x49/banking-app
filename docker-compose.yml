@@ -1,6 +1,6 @@
 services:
   redis:
-    image: redis:8
+    image: redis:7-alpine
     container_name: my-redis
     env_file:
       - ./server/.env
@@ -15,8 +15,8 @@ services:
     ports:
       - "${REDIS_PORT}:6379"
     volumes:
-      - redis-data:/data
+      - redis_data:/data
     restart: unless-stopped
 
 volumes:
-  redis-data:
+  redis_data:

@@ -27,6 +27,8 @@ app.use(helmet({
 
 // Router
 import authRouter from "../routes/auth.routes.js";
+import accountRouter from "../routes/account.routes.js";
+import transactionRouter from "../routes/transaction.routes.js";
 
 
 // Routes
@@ -34,5 +36,15 @@ import authRouter from "../routes/auth.routes.js";
  * authentication and authorization related routes
  */
 app.use("/api/auth", authRouter);
+
+/**
+ * account related routes
+ */
+app.use("/api/account", accountRouter);
+
+/**
+ * transaction related routes
+ */
+app.use("/api/transaction", transactionRouter);
 
 export default app;

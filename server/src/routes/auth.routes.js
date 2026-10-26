@@ -5,7 +5,9 @@ import {
   userLogoutValidator,
   userRegisterValidator,
 } from "../validations/auth.validation.js";
+import { authMiddleware } from "../middlewares/auth.middleware.js";
 import {
+  getUserController,
   issueRefreshToken,
   refreshTokenController,
   userLoginController,
@@ -53,6 +55,13 @@ router.get(
     }
   },
 );
+
+/**
+ * @route GET /api/auth/me
+ * @desc Get current user
+ * @access Private
+ */
+router.get("/me", authMiddleware, getUserController);
 
 /**
  * @route POST /api/auth/register

@@ -44,4 +44,24 @@ const sendRegistrationEmail = async ({ to, name }) => {
   });
 };
 
-export { sendRegistrationEmail };
+const sendTransactionNotificationEmail = async ({ to, name, amount, type }) => {
+  await sendMail({
+    to,
+    subject: "Transaction Notification",
+    text: `Dear ${name}, A transaction of ${amount} has been made from your account.`,
+  });
+};
+
+const sendFailedTransactionEmail = async ({ to, name, message }) => {
+  await sendMail({
+    to,
+    subject: "Failed Transaction",
+    text: `Dear ${name}, Your transaction has failed. ${message}. Please try again.`,
+  });
+};
+
+export {
+  sendRegistrationEmail,
+  sendTransactionNotificationEmail,
+  sendFailedTransactionEmail,
+};

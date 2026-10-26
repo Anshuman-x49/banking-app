@@ -96,17 +96,14 @@ const userRegisterController = async (req, res) => {
     });
 
     // Consistent token issuance and cookie setup
-    await sendAuthTokenResponse(
-      user,
-      res,
-      201,
-      "User registered successfully",
-    );
+    await sendAuthTokenResponse(user, res, 201, "User registered successfully");
 
     // send email to user
-    sendRegistrationEmail({ to: user.email, name: user.name }).catch((error) => {
-      console.error(error);
-    });
+    sendRegistrationEmail({ to: user.email, name: user.name }).catch(
+      (error) => {
+        console.error(error);
+      },
+    );
   } catch (error) {
     // for internal server error
     return res.status(500).json({
@@ -342,10 +339,50 @@ const userLogoutController = async (req, res) => {
   }
 };
 
+const getUserController = async (req, res) => {
+  try {
+    // get user id from req.user
+    const { id } = req.user;
+
+    // get user from database
+    const user = await userModel.findById(id).select("-password");
+
+    // if user not found
+    if (!user) {
+      return res.status(401).json({
+        message: "Unauthorized, user not found",
+        errors: [
+          {
+            path: "token",
+            msg: "User not found",
+          },
+        ],
+      });
+    }
+
+    // response to client
+    return res.status(200).json({
+      message: "User fetched successfully",
+      data: {
+        user: {
+          name: req.user.name,
+          email: req.user.email,
+        },
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Error while fetching user",
+      error: error.message,
+    });
+  }
+};
+
 export {
   issueRefreshToken,
   userRegisterController,
   userLoginController,
   refreshTokenController,
   userLogoutController,
+  getUserController,
 };

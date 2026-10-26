@@ -1,5 +1,4 @@
 import jwt from "jsonwebtoken";
-import crypto from "crypto";
 import config from "../config/config.js";
 
 // cookie option
@@ -36,37 +35,10 @@ const verifyRefreshToken = ({ refreshToken }) => {
   return jwt.verify(refreshToken, config.refresh_token_secret);
 };
 
-/**
- * CSRF Protection for OAuth Flows:
- * Generates a high-entropy, cryptographically random state parameter.
- * This state is stored temporarily (e.g. in Redis or cookie) and sent to Google,
- * then validated upon callback to prevent OAuth login CSRF attacks.
- */
-const generateOAuthState = () => {
-  return crypto.randomBytes(32).toString("hex");
-};
-
-/**
- * Timing-safe state comparison to mitigate timing attacks during CSRF validation.
- */
-const verifyOAuthState = (receivedState, storedState) => {
-  if (!receivedState || !storedState) return false;
-  try {
-    const receivedBuffer = Buffer.from(receivedState);
-    const storedBuffer = Buffer.from(storedState);
-    if (receivedBuffer.length !== storedBuffer.length) return false;
-    return crypto.timingSafeEqual(receivedBuffer, storedBuffer);
-  } catch {
-    return false;
-  }
-};
-
 export {
   cookieOptions,
   generateAccessToken,
   generateRefreshToken,
   verifyAccessToken,
   verifyRefreshToken,
-  generateOAuthState,
-  verifyOAuthState,
 };
